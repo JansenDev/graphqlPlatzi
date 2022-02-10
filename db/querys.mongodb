@@ -1,0 +1,32 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('platzi-graph');
+
+db.course.insertMany(
+    [
+  {
+    title: "dev",
+    teacher: "janssen",
+    description: "una description",
+    topic: "Programacion",
+  },
+  {
+    title: "dev 2",
+    teacher: "janssen 2",
+    description: "una description 2",
+    topic: "Programacion 2",
+  },
+  {
+    title: "dev3 ",
+    teacher: "janssen3 ",
+    description: "una description3 ",
+    topic: "Programacion3 ",
+  },
+]
+    )
+use('platzi-graph');
+db.courses.drop()

@@ -5,6 +5,8 @@ type Query {
   gretting: String
   "retorna un arreglo de Courses"
   getCourses: [Course]
+  "Retorna un curso por su ID"
+  getCourse(id: ID!): Course
 }
 
 type Course {

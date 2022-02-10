@@ -1,8 +1,8 @@
 "use strict";
-const { makeExecutableSchema } = require("@graphql-tools/schema");
-const { buildSchema } = require("graphql");
+require("dotenv").config({ path: ".env" });
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 
 const { join } = require("path");
 const { readFileSync } = require("fs");
@@ -10,18 +10,23 @@ const { readFileSync } = require("fs");
 const resolvers = require("./schema/resolvers");
 
 const app = express();
-
 const port = process.env.PORT || 3000;
 
-const typeDefs = buildSchema(
-  readFileSync(join(__dirname, "schema", "schema.graphql"), "utf-8")
+const typeDefs = readFileSync(
+  join(__dirname, "schema", "schema.graphql"),
+  "utf-8"
 );
+
+// makeExecutableSchema tiene mejores caracteristicas que buildSchema de modulo 'graphql'
+const schema = makeExecutableSchema({
+  typeDefs, // Obligatorio para que funcione la applicacion
+  resolvers, //Los resolvers son opcionales
+});
 
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: typeDefs,
-    rootValue: resolvers,
+    schema: schema,
     graphiql: true,
   })
 );
