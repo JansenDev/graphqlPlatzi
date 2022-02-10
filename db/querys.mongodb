@@ -6,6 +6,7 @@
 // Select the database to use.
 use('platzi-graph');
 
+// ADD COURSES
 db.course.insertMany(
     [
   {
@@ -28,5 +29,24 @@ db.course.insertMany(
   },
 ]
     )
-use('platzi-graph');
-db.courses.drop()
+    // ADD STUDENTS
+//     db.student.insertMany(
+//     [
+//   {
+//     name: "dev",
+//     email: "janssen@gmail.com",
+//   },
+//   {
+//     name: "jr",
+//     email: "jr@gmail.com",
+//   },
+//   {
+//     name: "juan",
+//     email: "juan@gmail.com",
+//   },
+//   {
+//     name: "ivana",
+//     email: "ivana@gmail.com",
+//   },
+// ]
+//     )

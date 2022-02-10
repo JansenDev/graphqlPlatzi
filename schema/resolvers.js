@@ -1,40 +1,86 @@
-const coursesList = [
-  {
-    _id: "anyid",
-    title: "dev",
-    teacher: "janssen",
-    description: "una description",
-    topic: "Programacion",
-  },
-  {
-    _id: "anyid2",
-    title: "dev 2",
-    teacher: "janssen 2",
-    description: "una description 2",
-    topic: "Programacion 2",
-  },
-  {
-    _id: "anyid3",
-    title: "dev3 ",
-    teacher: "janssen3 ",
-    description: "una description3 ",
-    topic: "Programacion3 ",
-  },
-];
+const connectDB = require("../db/db");
+const { ObjectId } = require("mongodb");
 
 const resolvers = {
   Query: {
-    getCourses: () => {
-      return coursesList;
-    },
-    getCourse: (_, { id }) => {
-      return coursesList.filter((course) => course._id === id).pop();
+    getCourses: async () => {
+      try {
+        const db = await connectDB();
+        const coursesList = await db.collection("course").find({}).toArray();
+        return coursesList;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
+    getCourse: async (_, { id }) => {
+      try {
+        const db = await connectDB();
+        const course = await db.collection("course").findOne({
+          _id: ObjectId(id),
+        });
+        return course;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    getStudents: async () => {
+      const db = await connectDB();
+      const studentList = await db.collection("student").find({}).toArray();
+      return studentList;
+    },
+    getStudentById: async (_, { id }) => {
+      const db = await connectDB();
+      const student = await db.collection("student").findOne({
+        _id: ObjectId(id),
+      });
+
+      return student;
+    },
     hello: () => "hello world",
     gretting: () => "Hola",
   },
-  // Mutation: {},
+  Mutation: {
+    addCourse: async (_, { input }) => {
+      const db = await connectDB();
+      const course = await db.collection("course").insertOne({ ...input });
+      input._id = course.insertedId;
+
+      return input;
+    },
+    addStudent: async (_, { input }) => {
+      try {
+        const db = await connectDB();
+        const queryResult = await db.collection("student").insertOne(input);
+        input._id = queryResult.insertedId;
+
+        return input;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    deleteStudentById: async (_, { id }) => {
+      const db = await connectDB();
+      const deleteResult = await db.collection("student").deleteOne({
+        _id: ObjectId(id),
+      });
+
+      return deleteResult.deletedCount === 1;
+    },
+    editStudent: async (_, { id, input }) => {
+      const db = await connectDB();
+      const filter = { _id: ObjectId(id) };
+      const data = { $set: input };
+      const options = { upsert: true };
+
+      const editResult = await db
+        .collection("student")
+        .updateOne(filter, data, options);
+
+      editSuccess = editResult.modifiedCount === 1;
+      return editSuccess ? input : null;
+    },
+  },
 };
 
 module.exports = resolvers;

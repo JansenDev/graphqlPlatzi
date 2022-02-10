@@ -10,7 +10,7 @@ async function connectDB() {
   try {
     const client = await MongoClient.connect(DB_URI);
 
-    let connection = client.db(DB_NAME);
+    connection = client.db(DB_NAME);
     console.log("Connected");
 
     return connection;
@@ -54,12 +54,9 @@ function getCursorMongo(callback) {
   });
 }
 
-getCursorMongo((x) => {
-  console.log("CALLBACK PRRO");
-  console.log(x);
-}).then((x) => {
-  console.log("THEN KK");
-  console.log(x);
-});
+// getCursorMongo(async (x) => {
+//   console.log("CALLBACK PRRO");
+//   console.log(await x.collection("course").find({}).toArray());
+// });
 
 module.exports = connectDB;

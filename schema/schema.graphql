@@ -7,6 +7,34 @@ type Query {
   getCourses: [Course]
   "Retorna un curso por su ID"
   getCourse(id: ID!): Course
+
+  "return Students"
+  getStudents: [Student]
+  "return studentById"
+  getStudentById(id: ID!): Student
+}
+
+type Mutation {
+  "create a course"
+  addCourse(input: courseInput): Course
+  "create a student"
+  addStudent(input: studentInput!): Student
+  "edit a student"
+  editStudent(id: ID!, input: studentInput!): Student
+  "delete a studentById"
+  deleteStudentById(id: ID!): Boolean
+}
+
+input courseInput {
+  title: String
+  teacher: String
+  description: String
+  topic: String
+}
+
+input studentInput {
+  email: String!
+  name: String!
 }
 
 type Course {
@@ -15,4 +43,10 @@ type Course {
   teacher: String
   description: String
   topic: String
+}
+
+type Student {
+  _id: ID
+  name: String
+  email: String
 }
