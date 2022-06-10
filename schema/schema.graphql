@@ -23,6 +23,8 @@ type Mutation {
   editStudent(id: ID!, input: studentInput!): Student
   "delete a studentById"
   deleteStudentById(id: ID!): Boolean
+  "add a student inacourse"
+  addStudentInACourse(idCourse:ID!,idStudent:ID!):Course
 }
 
 input courseInput {
@@ -43,6 +45,7 @@ type Course {
   teacher: String
   description: String
   topic: String
+  student:[Student]
 }
 
 type Student {

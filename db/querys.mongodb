@@ -50,3 +50,5 @@ db.course.insertMany(
 //   },
 // ]
 //     )
+// use('platzi-graph');
+// db.course.drop()
